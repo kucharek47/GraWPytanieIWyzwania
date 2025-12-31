@@ -18,7 +18,8 @@ zasady_tekst = """
 5.	Pijesz podaną liczbę szotów jeżeli nie chcesz wykonać zadania lub nie dasz rady.
 6.	Przy jednomyślnym przegłosowaniu można zmienić liczbę szotów w danym pytaniu lub wyzwaniu.
 7.	Nie możesz wziąć więcej niż 3 razy tej samej opcji (pytanie/wyzwanie).
-8.	Za każde czepianie się apki, osoba czepiająca pije karnego szota!
+8.	Jest możliwości wylosowania jednego kielisza wiecej lub mniej kiedy ma sie 2 (kilknij na kieliszki)
+9.	Za każde czepianie się apki, osoba czepiająca pije karnego szota!
 """
 
 @app.route('/api/pytanie', methods=['GET'])
