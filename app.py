@@ -1,7 +1,8 @@
 import json
 import random
 from flask_cors import CORS
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, abort, send_from_directory
+import os
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
@@ -20,9 +21,6 @@ zasady_tekst = """
 8.	Za każde czepianie się apki, osoba czepiająca pije karnego szota!
 """
 
-@app.route('/')
-def index():
-    return render_template('index.html')
 @app.route('/api/pytanie', methods=['GET'])
 def pytania():
     wynik = random.choice(pytania_lista)
@@ -44,6 +42,25 @@ def wyzwania():
 @app.route('/api/zasady', methods=['GET'])
 def zasady():
     return jsonify({"tresc": str(zasady_tekst)})
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+@app.route('/<path:path>')
+def spa_fallback(path):
+    # jeżeli to API → 404
+    if path.startswith('api'):
+        abort(404)
+
+    # jeżeli plik istnieje w static → zwróć go
+    full_path = os.path.join(app.static_folder, path)
+    if os.path.isfile(full_path):
+        return send_from_directory(app.static_folder, path)
+
+    # w innym przypadku → Angular (router)
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(port=13001)
