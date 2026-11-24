@@ -51,17 +51,14 @@ def index():
 
 @app.route('/<path:path>')
 def spa_fallback(path):
-    # jeżeli to API → 404
     if path.startswith('api'):
         abort(404)
 
-    # jeżeli plik istnieje w static → zwróć go
     full_path = os.path.join(app.static_folder, path)
     if os.path.isfile(full_path):
         return send_from_directory(app.static_folder, path)
 
-    # w innym przypadku → Angular (router)
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(port=13001)
+    app.run(host='0.0.0.0', port=13001)
